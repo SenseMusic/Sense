@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp" >
+
+
+    <ImageView
+        android:id="@+id/imageView_Album_AlbumArt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/album_art"
+        />
+
+    <TextView
+        android:paddingLeft="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_toRightOf="@id/imageView_Album_AlbumArt"
+        android:id="@+id/AlbumName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Album Name"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:textColor="#cde4f5"
+        android:maxLines="1" />
+
+    <TextView
+        android:paddingLeft="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:id="@+id/albumArtist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Album Artist"
+        android:textSize="14sp"
+        android:layout_toRightOf="@+id/imageView_Album_AlbumArt"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_below="@+id/AlbumName" />
+</RelativeLayout>

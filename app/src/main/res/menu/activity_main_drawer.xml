@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/group_main" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_songs"
+            android:icon="@drawable/ic_menu_songs"
+            android:title="Songs" />
+        <item
+            android:id="@+id/nav_artists"
+            android:icon="@drawable/ic_menu_artists"
+            android:title="Artists" />
+        <item
+            android:id="@+id/nav_albums"
+            android:icon="@drawable/ic_menu_albums"
+            android:title="Albums" />
+        <item
+            android:id="@+id/nav_heart"
+            android:icon="@drawable/ic_menu_heart"
+            android:title="Heart Analyser" />
+
+    </group>
+
+    <group android:id="@+id/group_more" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="Settings" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_menu_about"
+            android:title="About" />
+        <item
+            android:id="@+id/nav_device"
+            android:icon="@drawable/ic_menu_device"
+            android:title="Device" />
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_menu_feedback"
+            android:title="Feedback" />
+
+    </group>
+
+</menu>

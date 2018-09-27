@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Base application theme.-->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <!-- Customize your main app theme here. -->
+
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <!-- Customize your mainactivity theme and actionbar here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <!-- Overrite Customization for your main app theme attibutes for appbar here. -->
+
+    </style>
+
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+        <!-- Overrite Customization for your main app theme attibutes for appbar's popups menu here. -->
+
+    </style>
+
+
+</resources>
