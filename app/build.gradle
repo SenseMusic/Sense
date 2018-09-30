@@ -1,52 +1,149 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.compileSdkVersion
+    //buildToolsVersion rootProject.buildToolsVersion
+
+    /* Flavor dimensions
+    NOTE:- Specifies the flavor dimensions you want to use. The order in which you
+    list each dimension determines its priority, from highest to lowest,
+    when Gradle merges variant sources and configurations. You must assign
+    each product flavor you configure to one of the flavor dimensions. */
+    flavorDimensions "version"
+
     defaultConfig {
-        applicationId "in.sensemusic.sense"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+
+        /* Application name
+        NOTE:- It must neither be present in /res/values/strings.xml
+        nor in /res/values/string_no_translate.xml i.e translations xmls
+        This string resource value will be generated on every compilation. */
+        resValue 'string', 'app_name', rootProject.appName
+
+        applicationId "$rootProject.applicationId"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.versionCode
+        versionName "$rootProject.versionName"
+
+        vectorDrawables.useSupportLibrary = true
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        // Change default apk file name
+        setProperty("archivesBaseName", "$rootProject.appName-$rootProject.versionName")
+
         compileOptions {
+            // Using Java Version 8
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
         }
     }
+
+    signingConfigs {
+        release {
+            //keyAlias 'AliasName'
+            //keyPassword 'KeyPass'
+            //storePassword 'StoredPass'
+            //storeFile file('path_to_file')    //Eg. C:/Users/singh/.ssh/id_rsa.pub
+        }
+    }
+
     dataBinding {
         enabled = true
     }
     buildTypes {
-        release {
+        debug {
+            versionNameSuffix "-debug"
+            applicationIdSuffix '.debug'
+
+            shrinkResources false
             minifyEnabled false
+
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
+            pseudoLocalesEnabled true
+            zipAlignEnabled false
+        }
+
+        release {
+            shrinkResources true
+            minifyEnabled true
+
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+            pseudoLocalesEnabled false
+            zipAlignEnabled true
+
+            // release build key signing
+            signingConfig signingConfigs.release
         }
     }
 	productFlavors {
+        //Examples:- free/demo & paid/pro versions or playstore & othermarket version
+        /*playstore {
+            dimension "version"
+        }
+        fdroid {
+            dimension "version"
+
+            applicationIdSuffix '.fdroid'
+        }*/
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
+
+        //enable 'ObsoleteSdkInt'
+
+        abortOnError true
     }
 }
 
 dependencies {
-
-	// Defaults
-	implementation fileTree(dir: 'libs', include: ['*.jar'])
-	testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "com.android.support.test:runner:$test_runner_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
-
-	// Support Libs
-    implementation "com.android.support:appcompat-v7:$support_lib_version"
-    implementation "com.android.support:support-v4:$support_lib_version"
-	implementation "com.android.support:design:$support_lib_version"
-    implementation "com.android.support:recyclerview-v7:$support_lib_version"
-	
-	// Constraint Layout
-    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
-
+    // Defaults
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    // Support Libs
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    // Constraint Layout
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     // Glide dependencies
-    implementation ("com.github.bumptech.glide:glide:$glide_version@aar") {
+    implementation("com.github.bumptech.glide:glide:$rootProject.glideVersion@aar") {
         transitive = true
-        //exclude group: "com.android.support"
+        //exclude group: "com.android.support" //exclude support libs if problem exits
     }
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+}
+
+// Release build key signing (Manually)
+Properties props = new Properties()
+def propFile = new File('signing.properties')
+if (propFile.canRead()) {
+    props.load(new FileInputStream(propFile))
+
+    if (props != null && props.containsKey('STORE_FILE') && props.containsKey('KEY_ALIAS') && props.containsKey('PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['PASSWORD']
+    } else {
+        println 'signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    println 'signing.properties not found'
+    android.buildTypes.release.signingConfig = null
 }

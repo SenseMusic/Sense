@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sense</string>
+    // NOTE:- app_name is now moved to app's build.gradle file
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
