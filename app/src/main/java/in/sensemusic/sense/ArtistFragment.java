@@ -36,7 +36,7 @@ public class ArtistFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerView_Artist);
+        recyclerView = getActivity().findViewById(R.id.recyclerView_Artist);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -52,7 +52,7 @@ public class ArtistFragment extends Fragment {
                 projection,
                 null,
                 null,
-                new String(MediaStore.Audio.Artists.ARTIST+""));
+                MediaStore.Audio.Artists.ARTIST+"");
 
         recyclerView.setAdapter(new ArtistAdapter(getContext(),Artist_cursor));
     }
@@ -144,9 +144,9 @@ class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>
         ImageView img_ArtistAlbumArt;
         public ArtistViewHolder(View itemView) {
             super(itemView);
-            txt_artistName = (TextView) itemView.findViewById(R.id.artistName);
-            txt_no_of_songs = (TextView) itemView.findViewById(R.id.no_of_songs);
-            img_ArtistAlbumArt = (ImageView) itemView.findViewById(R.id.imageView_Artist_AlbumArt);
+            txt_artistName = itemView.findViewById(R.id.artistName);
+            txt_no_of_songs = itemView.findViewById(R.id.no_of_songs);
+            img_ArtistAlbumArt = itemView.findViewById(R.id.imageView_Artist_AlbumArt);
         }
     }
 }

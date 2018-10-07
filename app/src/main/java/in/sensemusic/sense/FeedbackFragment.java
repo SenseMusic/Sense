@@ -11,8 +11,6 @@ import android.widget.EditText;
 
 public class FeedbackFragment extends Fragment {
 
-    EditText feedback;
-    Button submit;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_feedback,container,false);
@@ -21,8 +19,8 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        feedback = (EditText) getActivity().findViewById(R.id.feed_feedback);
-        submit = (Button) getActivity().findViewById(R.id.feed_submit);
+        EditText feedback = getActivity().findViewById(R.id.feed_feedback);
+        Button submit =  getActivity().findViewById(R.id.feed_submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

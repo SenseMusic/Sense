@@ -7,8 +7,6 @@
     android:id="@+id/frame_about">
 
 
-
-
     <TextView
         android:layout_marginBottom="38dp"
         android:layout_width="match_parent"
@@ -26,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about_creators"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
@@ -47,7 +45,7 @@
         android:layout_below="@+id/imageView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:text="Sense v1.0.0"
+        android:text="@string/app_version"
         android:textSize="17sp"/>
 
 </RelativeLayout>

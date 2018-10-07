@@ -29,16 +29,16 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //ViewPager
-        ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+        ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
         final FragmentManager fragmentManager = getChildFragmentManager();
         viewPager.setAdapter(new HomeAdapter(fragmentManager,getContext()));
 
 
-        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = getActivity().findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,17 +87,17 @@ class HomeAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         //Log.d("sense","Called GetITEM at pos : "+position);
-        Fragment fragment = new SongFragment();
         if(position == 0) {
-            return fragment = new SongFragment();
+            return new SongFragment();
         }
         if(position == 1) {
-            return fragment = new AlbumFragment();
+            return new AlbumFragment();
         }
         if(position == 2) {
-            return fragment = new ArtistFragment();
+            return new ArtistFragment();
         }
-        return fragment;
+        //else default
+        return new SongFragment();
     }
 
     @Override

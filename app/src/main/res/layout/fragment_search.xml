@@ -12,7 +12,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listview_country"
+        android:id="@+id/listView_Search"
         android:layout_weight="1" />
 
 </LinearLayout>

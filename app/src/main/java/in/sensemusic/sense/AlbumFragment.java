@@ -35,7 +35,7 @@ public class AlbumFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerView_Album);
+        recyclerView = getActivity().findViewById(R.id.recyclerView_Album);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         //Log.d("Sense","Album Called");
@@ -53,7 +53,7 @@ public class AlbumFragment extends Fragment {
                 projection,
                 null,//Selection Statement
                 null,//Selection Arguments replacement for ? in where id=?
-                new String(MediaStore.Audio.Albums.ALBUM+""));
+                MediaStore.Audio.Albums.ALBUM+"");
 
         recyclerView.setAdapter(new AlbumAdapter(getContext(),Media_cursor));
     }
@@ -71,11 +71,11 @@ public class AlbumFragment extends Fragment {
 class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
 
     LayoutInflater layoutInflater;
-    Cursor AlbmCursor;
+    Cursor AlbumCursor;
     Context context;
 
-    public AlbumAdapter(Context context,Cursor albmCursor) {
-        AlbmCursor = albmCursor;
+    public AlbumAdapter(Context context,Cursor albumCursor) {
+        AlbumCursor = albumCursor;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -90,15 +90,15 @@ class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
 
     @Override
     public void onBindViewHolder(AlbumViewHolder holder, int position) {
-        if (!AlbmCursor.moveToPosition(position)) {
+        if (!AlbumCursor.moveToPosition(position)) {
             throw new IllegalStateException("couldn't move cursor to position " + position);
         }
 
         //Log.d("Sense","Album BindView");
-        holder.txt_AlbumName.setText(AlbmCursor.getString(AlbmCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM)));
-        holder.txt_ArtistName.setText(AlbmCursor.getString(AlbmCursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST)));
+        holder.txt_AlbumName.setText(AlbumCursor.getString(AlbumCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM)));
+        holder.txt_ArtistName.setText(AlbumCursor.getString(AlbumCursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST)));
 
-        String album_art = AlbmCursor.getString(AlbmCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+        String album_art = AlbumCursor.getString(AlbumCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
         //Log.d("Sense",album_art+"");
         Glide
                 .with(context)
@@ -117,7 +117,7 @@ class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
 
     @Override
     public int getItemCount() {
-        return AlbmCursor.getCount();
+        return AlbumCursor.getCount();
     }
 
     class AlbumViewHolder extends RecyclerView.ViewHolder{
@@ -127,9 +127,9 @@ class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
 
         public AlbumViewHolder(View itemView) {
             super(itemView);
-            txt_ArtistName = (TextView) itemView.findViewById(R.id.albumArtist);
-            txt_AlbumName = (TextView) itemView.findViewById(R.id.AlbumName);
-            Album_ART = (ImageView) itemView.findViewById(R.id.imageView_Album_AlbumArt);
+            txt_ArtistName = itemView.findViewById(R.id.albumArtist);
+            txt_AlbumName = itemView.findViewById(R.id.AlbumName);
+            Album_ART = itemView.findViewById(R.id.imageView_Album_AlbumArt);
         }
     }
 }

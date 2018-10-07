@@ -18,6 +18,7 @@ android {
         nor in /res/values/string_no_translate.xml i.e translations xmls
         This string resource value will be generated on every compilation. */
         resValue 'string', 'app_name', rootProject.appName
+        resValue 'string', 'app_version', rootProject.versionName
 
         applicationId "$rootProject.applicationId"
         minSdkVersion rootProject.minSdkVersion

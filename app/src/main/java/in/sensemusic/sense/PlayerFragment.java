@@ -30,10 +30,6 @@ public class PlayerFragment extends Fragment {
     MediaPlayer mediaPlayer = new MediaPlayer();
     long currentSongID;
 
-    //String nowPlayingTrack,album,artist,duration;
-    TextView NowPlayingTrack,Album,Artist,Duration;
-    ImageView AlbumArt;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,11 +43,14 @@ public class PlayerFragment extends Fragment {
 
         Bundle SongInfo = getArguments();
 
-        NowPlayingTrack = (TextView) getActivity().findViewById(R.id.song);
-        Album = (TextView) getActivity().findViewById(R.id.album);
-        Artist = (TextView) getActivity().findViewById(R.id.artist);
-        Duration = (TextView) getActivity().findViewById(R.id.time_duration);
-        AlbumArt = (ImageView) getActivity().findViewById(R.id.album_art);
+        TextView NowPlayingTrack,Album,Artist,Duration;
+        ImageView AlbumArt;
+
+        NowPlayingTrack = getActivity().findViewById(R.id.song);
+        Album = getActivity().findViewById(R.id.album);
+        Artist = getActivity().findViewById(R.id.artist);
+        Duration = getActivity().findViewById(R.id.time_duration);
+        AlbumArt = getActivity().findViewById(R.id.album_art);
 
 
         if (SongInfo != null) {
