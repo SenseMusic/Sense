@@ -9,5 +9,9 @@
 
     <string name="about">Developed By </string>
     <string name="about_creators">Sense Music Inc. </string>
+    <string name="defaultSongTitle">Now Playing</string>
+    <string name="defaultSongArtist">Artist</string>
+    <string name="defaultSongAlbum">Album</string>
+    <string name="defaultSongDuration">00:00</string>
 
 </resources>

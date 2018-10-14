@@ -3,6 +3,7 @@ package in.sensemusic.sense;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,9 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import java.util.Objects;
 
 import static in.sensemusic.sense.SearchFragment.arrayAdapter;
 import static in.sensemusic.sense.SearchFragment.arrayListSongs;
@@ -64,17 +66,14 @@ public class MainActivity extends AppCompatActivity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryHint("Search Songs");
 
-        //searchview click handled
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SearchFragment searchFragment = new SearchFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_main,searchFragment);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+        //search view click handled
+        searchView.setOnSearchClickListener(v -> {
+            SearchFragment searchFragment = new SearchFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_main,searchFragment);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
 
         //search text change fragment component updated call
@@ -97,13 +96,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        //on searchview closed
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                getSupportFragmentManager().popBackStack();
-                return false;
-            }
+        //on search view closed
+        searchView.setOnCloseListener(() -> {
+            getSupportFragmentManager().popBackStack();
+            return false;
         });
 
 
@@ -116,10 +112,10 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        item.getItemId();
 
         /*/ Handle Appbar Icon Clicks
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_settings) {
 
         }
         */
@@ -129,7 +125,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -218,7 +214,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    //overridding back press button
+    //over ridding back press button
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -233,8 +229,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //forSetting ActionBar Title Using Fragments
+    //for Setting ActionBar Title Using Fragments
     public void setActionBarTitle(String title) {
-        getSupportActionBar().setTitle(title);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 }

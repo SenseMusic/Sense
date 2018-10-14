@@ -1,18 +1,18 @@
 package in.sensemusic.sense;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +25,18 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /*
 Recycler View
-1. Initialize RecylerView & Layout Manager
-2. SetLayoutManager On RecylerView
+1. Initialize RecyclerView & Layout Manager
+2. SetLayoutManager On RecyclerView
 */
 
 public class SongFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_song, container, false);
     }
 
@@ -43,7 +44,7 @@ public class SongFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        RecyclerView recyclerView = getActivity().findViewById(R.id.recyclerView_Songs);
+        RecyclerView recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Songs);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -73,7 +74,7 @@ public class SongFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) getActivity()).setActionBarTitle("Songs");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Songs");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Albums");
     }
 
@@ -83,16 +84,15 @@ class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
     private Cursor songCursor;
     private Context context;
     private LayoutInflater layoutInflater;
-    private static String TAG = "sense";
     private HashMap<String, String> albumartData;
     private Bundle PlayerSongInfo  = new Bundle();
 
-    public SongAdapter(Context context, Cursor songCursor) {
+    SongAdapter(Context context, Cursor songCursor) {
         this.songCursor = songCursor;
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
 
-        albumartData = new HashMap<String, String>();
+        albumartData = new HashMap<>();
 
         String[] projection = {
                 MediaStore.Audio.Albums._ID,
@@ -100,14 +100,14 @@ class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
         };
 
         ContentResolver content = context.getContentResolver();
-        Cursor albumArtCursor = content.query(
+        @SuppressLint("Recycle") Cursor albumArtCursor = content.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 projection,
                 null,
                 null, //new String[]{songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID))},
                 null);
 
-        while(albumArtCursor.moveToNext())
+        while(Objects.requireNonNull(albumArtCursor).moveToNext())
         {
             albumartData.put(albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums._ID)),
                     albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART)));
@@ -115,16 +115,17 @@ class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
         }
     }
 
+    @NonNull
     @Override
-    public SongViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Log.d(TAG,"called OnCreateViewHolder()");
         View view = layoutInflater.inflate(R.layout.song_name,parent,false);
-        SongViewHolder songViewHolder = new SongViewHolder(view);
-        return songViewHolder;
+        return new SongViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(SongViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
 
         if ( !songCursor.moveToPosition(position) ) {
             throw new IllegalStateException("couldn't move cursor to position " + position);
@@ -158,25 +159,22 @@ class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
         min = seconds/60;
         holder.txt_duration.setText(min+":"+(seconds%60));
 
-        holder.txt_song_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlayerSongInfo.putLong(MediaStore.Audio.Media._ID, _id);
-                PlayerSongInfo.putString(MediaStore.Audio.Media.TITLE, title);
-                PlayerSongInfo.putString(MediaStore.Audio.Media.ARTIST, artist);
-                PlayerSongInfo.putString(MediaStore.Audio.Media.ALBUM, album);
-                PlayerSongInfo.putString(MediaStore.Audio.Media.DURATION, +min+":"+(seconds%60));
-                PlayerSongInfo.putString(MediaStore.Audio.Albums.ALBUM_ART, albumart);
+        holder.txt_song_name.setOnClickListener(v -> {
+            PlayerSongInfo.putLong(MediaStore.Audio.Media._ID, _id);
+            PlayerSongInfo.putString(MediaStore.Audio.Media.TITLE, title);
+            PlayerSongInfo.putString(MediaStore.Audio.Media.ARTIST, artist);
+            PlayerSongInfo.putString(MediaStore.Audio.Media.ALBUM, album);
+            PlayerSongInfo.putString(MediaStore.Audio.Media.DURATION, +min+":"+(seconds%60));
+            PlayerSongInfo.putString(MediaStore.Audio.Albums.ALBUM_ART, albumart);
 
-                PlayerFragment playerFragment = new PlayerFragment();
-                playerFragment.setArguments(PlayerSongInfo);
-                FragmentTransaction fragmentTransaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_main,playerFragment);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+            PlayerFragment playerFragment = new PlayerFragment();
+            playerFragment.setArguments(PlayerSongInfo);
+            FragmentTransaction fragmentTransaction = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_main,playerFragment);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
-            }
         });
 
         Glide
@@ -205,7 +203,7 @@ class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
         TextView txt_song_name,txt_duration,txt_artist,txt_album;
         ImageView img_AlbumArt;
 
-        public SongViewHolder(View itemView) {
+        SongViewHolder(View itemView) {
             super(itemView);
             txt_song_name = itemView.findViewById(R.id.SongName);
             txt_duration = itemView.findViewById(R.id.time);

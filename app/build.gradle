@@ -27,7 +27,6 @@ android {
         versionName "$rootProject.versionName"
 
         vectorDrawables.useSupportLibrary = true
-		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Change default apk file name
         setProperty("archivesBaseName", "$rootProject.appName-$rootProject.versionName")
@@ -109,18 +108,18 @@ android {
 }
 
 dependencies {
-    // Defaults
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+
     // Support Libs
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-core-utils:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-media-compat:$rootProject.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+
     // Constraint Layout
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    
     // Glide dependencies
     implementation("com.github.bumptech.glide:glide:$rootProject.glideVersion@aar") {
         transitive = true

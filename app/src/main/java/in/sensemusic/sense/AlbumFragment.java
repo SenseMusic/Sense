@@ -3,14 +3,12 @@ package in.sensemusic.sense;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,20 +20,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.Objects;
+
 public class AlbumFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     Cursor Media_cursor;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_album, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = getActivity().findViewById(R.id.recyclerView_Album);
+        recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Album);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         //Log.d("Sense","Album Called");
@@ -62,7 +62,7 @@ public class AlbumFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) getActivity()).setActionBarTitle("Albums");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Albums");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Albums");
     }
 
@@ -70,26 +70,26 @@ public class AlbumFragment extends Fragment {
 
 class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
 
-    LayoutInflater layoutInflater;
-    Cursor AlbumCursor;
-    Context context;
+    private LayoutInflater layoutInflater;
+    private Cursor AlbumCursor;
+    private Context context;
 
-    public AlbumAdapter(Context context,Cursor albumCursor) {
+    AlbumAdapter(Context context, Cursor albumCursor) {
         AlbumCursor = albumCursor;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
     }
 
+    @NonNull
     @Override
-    public AlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.album_name,parent,false);
-        AlbumViewHolder albumViewHolder = new AlbumViewHolder(view);
         //Log.d("Sense","Album CreateView");
-        return albumViewHolder;
+        return new AlbumViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AlbumViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AlbumViewHolder holder, int position) {
         if (!AlbumCursor.moveToPosition(position)) {
             throw new IllegalStateException("couldn't move cursor to position " + position);
         }
@@ -125,7 +125,7 @@ class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
         TextView txt_ArtistName,txt_AlbumName;
         ImageView Album_ART;
 
-        public AlbumViewHolder(View itemView) {
+        AlbumViewHolder(View itemView) {
             super(itemView);
             txt_ArtistName = itemView.findViewById(R.id.albumArtist);
             txt_AlbumName = itemView.findViewById(R.id.AlbumName);

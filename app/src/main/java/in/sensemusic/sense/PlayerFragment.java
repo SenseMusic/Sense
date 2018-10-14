@@ -1,14 +1,12 @@
 package in.sensemusic.sense;
 
-import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.Context;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +22,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class PlayerFragment extends Fragment {
 
@@ -31,7 +30,7 @@ public class PlayerFragment extends Fragment {
     long currentSongID;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_player, container, false);
@@ -46,7 +45,7 @@ public class PlayerFragment extends Fragment {
         TextView NowPlayingTrack,Album,Artist,Duration;
         ImageView AlbumArt;
 
-        NowPlayingTrack = getActivity().findViewById(R.id.song);
+        NowPlayingTrack = Objects.requireNonNull(getActivity()).findViewById(R.id.song);
         Album = getActivity().findViewById(R.id.album);
         Artist = getActivity().findViewById(R.id.artist);
         Duration = getActivity().findViewById(R.id.time_duration);
@@ -61,7 +60,7 @@ public class PlayerFragment extends Fragment {
             Duration.setText(SongInfo.getString(MediaStore.Audio.Media.DURATION));
 
             Glide
-                    .with(getContext())
+                    .with(Objects.requireNonNull(getContext()))
                     .load(SongInfo.getString(MediaStore.Audio.Albums.ALBUM_ART))
                     .apply(new RequestOptions()
                             .placeholder(R.drawable.album_art)
@@ -77,13 +76,13 @@ public class PlayerFragment extends Fragment {
             playSong(currentSongID);
         }
         else {
-            NowPlayingTrack.setText("Now Playing");
-            Artist.setText("Artist");
-            Album.setText("Album");
-            Duration.setText("00:00");
+            NowPlayingTrack.setText(getString(R.string.defaultSongTitle));
+            Artist.setText(getString(R.string.defaultSongArtist));
+            Album.setText(getString(R.string.defaultSongAlbum));
+            Duration.setText(getString(R.string.defaultSongDuration));
 
             Glide
-                    .with(getContext()).load("")
+                    .with(Objects.requireNonNull(getContext())).load("")
                     .apply(new RequestOptions()
                             .placeholder(R.drawable.album_art)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -102,7 +101,7 @@ public class PlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) getActivity()).setActionBarTitle("Player");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Player");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Player");
     }
 
@@ -123,7 +122,7 @@ public class PlayerFragment extends Fragment {
                 currSong);
 
         //set player properties
-        mediaPlayer.setWakeMode(getActivity().getApplicationContext(),PowerManager.PARTIAL_WAKE_LOCK);
+        mediaPlayer.setWakeMode(Objects.requireNonNull(getActivity()).getApplicationContext(),PowerManager.PARTIAL_WAKE_LOCK);
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         //play a song from start
         mediaPlayer.reset();
@@ -139,7 +138,7 @@ public class PlayerFragment extends Fragment {
         try{
             mediaPlayer.prepare();
         }catch(IOException e){
-            Log.e("sense", "Error at mediaplayer prepare", e);}
+            Log.e("sense", "Error at media player prepare", e);}
 
         //start play
         mediaPlayer.start();

@@ -1,25 +1,24 @@
 package in.sensemusic.sense;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
+import java.util.Objects;
+
 public class HomeFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
@@ -29,9 +28,9 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //ViewPager
-        ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
+        ViewPager viewPager = Objects.requireNonNull(getActivity()).findViewById(R.id.viewpager);
         final FragmentManager fragmentManager = getChildFragmentManager();
-        viewPager.setAdapter(new HomeAdapter(fragmentManager,getContext()));
+        viewPager.setAdapter(new HomeAdapter(fragmentManager));
 
 
         TabLayout tabLayout = getActivity().findViewById(R.id.sliding_tabs);
@@ -39,21 +38,15 @@ public class HomeFragment extends Fragment {
 
 
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab.setOnClickListener(view -> {
 
-                PlayerFragment playerFragment = new PlayerFragment();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_main,playerFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();
+            PlayerFragment playerFragment = new PlayerFragment();
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_main,playerFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
 
-                /* Snackbar.make(view, "Opening Player Fragment", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                        */
-            }
         });
     }
 
@@ -61,7 +54,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) getActivity()).setActionBarTitle("Home");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Home");
          //((MainActivity) getActivity()).getSupportActionBar().setTitle("Home");
     }
 
@@ -69,19 +62,16 @@ public class HomeFragment extends Fragment {
 
 class HomeAdapter extends FragmentPagerAdapter {
 
-    final int PageCount = 3;
     private String Tabtitle[] ={"Songs","Album","Artist"};
-    private Context context;
 
-    public HomeAdapter(FragmentManager fm,Context context) {
+    HomeAdapter(FragmentManager fm) {
         super(fm);
-        this.context = context;
     }
 
     @Override
     public int getCount()
     {
-        return PageCount;
+        return 3;
     }
 
     @Override

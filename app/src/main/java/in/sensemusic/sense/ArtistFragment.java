@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.HashMap;
-import java.util.zip.Inflater;
+import java.util.Objects;
 
 public class ArtistFragment extends Fragment {
 
@@ -29,14 +30,14 @@ public class ArtistFragment extends Fragment {
     Cursor Artist_cursor;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_artist, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = getActivity().findViewById(R.id.recyclerView_Artist);
+        recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Artist);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -61,7 +62,7 @@ public class ArtistFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) getActivity()).setActionBarTitle("Artists");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Artists");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Artists");
     }
 
@@ -69,16 +70,16 @@ public class ArtistFragment extends Fragment {
 
 class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>{
 
-    private Cursor artistCursor,AlbumArtCursor;
+    private Cursor artistCursor;
     private LayoutInflater layoutInflater;
     private Context context;
     private HashMap<String,String> albumartData;
 
-    public ArtistAdapter(Context context,Cursor artistCursor) {
+    ArtistAdapter(Context context, Cursor artistCursor) {
         this.artistCursor = artistCursor;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        albumartData = new HashMap<String, String>();
+        albumartData = new HashMap<>();
 
         String[] projection = {
                 MediaStore.Audio.Albums.ARTIST,
@@ -86,37 +87,37 @@ class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>
         };
 
         ContentResolver content = context.getContentResolver();
-        AlbumArtCursor = content.query(
+        try (Cursor albumArtCursor = content.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
                 projection,
                 null,
                 null, //new String[]{songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID))},
-                null);
+                null)) {
 
-        while(AlbumArtCursor.moveToNext())
-        {
-            albumartData.put(AlbumArtCursor.getString(AlbumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST)),
-                    AlbumArtCursor.getString(AlbumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART)));
-            //   Log.d(TAG,albumartData.get(AlbumArtCursor.getString(AlbumArtCursor.getColumnIndex(MediaStore.Audio.Albums._ID)))+"Albumdata");
+            while (Objects.requireNonNull(albumArtCursor).moveToNext()) {
+                albumartData.put(albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST)),
+                        albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART)));
+                //   Log.d(TAG,albumartData.get(AlbumArtCursor.getString(AlbumArtCursor.getColumnIndex(MediaStore.Audio.Albums._ID)))+"Albumdata");
+            }
         }
     }
 
 
+    @NonNull
     @Override
-    public ArtistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ArtistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.artist_name,parent,false);
-        ArtistViewHolder artistViewHolder = new ArtistViewHolder(view);
-        return artistViewHolder;
+        return new ArtistViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ArtistViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ArtistViewHolder holder, int position) {
         if (!artistCursor.moveToPosition(position)) {
             throw new IllegalStateException("couldn't move cursor to position " + position);
         }
 
         holder.txt_artistName.setText(artistCursor.getString(artistCursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST)));
-        holder.txt_no_of_songs.setText(artistCursor.getString(artistCursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS))+" Songs");
+        holder.txt_no_of_songs.setText(String.format("%s Songs", artistCursor.getString(artistCursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS))));
 
         Glide
                 .with(context)
@@ -142,7 +143,7 @@ class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>
 
         TextView txt_artistName,txt_no_of_songs;
         ImageView img_ArtistAlbumArt;
-        public ArtistViewHolder(View itemView) {
+        ArtistViewHolder(View itemView) {
             super(itemView);
             txt_artistName = itemView.findViewById(R.id.artistName);
             txt_no_of_songs = itemView.findViewById(R.id.no_of_songs);
