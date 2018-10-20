@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,19 +10,21 @@ import android.view.ViewGroup;
 
 import java.util.Objects;
 
-public class HeartAnalyserFragment extends Fragment {
+import in.sensemusic.sense.R;
+import in.sensemusic.sense.activities.MainActivity;
 
+public class DeviceFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_heart_analyser,container,false);
+        return inflater.inflate(R.layout.fragment_device,container,false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Heart Analyser");
-        // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Albums");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Device");
+        // ((MainActivity) getActivity()).getSupportActionBar().setTitle("About");
     }
 }

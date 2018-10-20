@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -18,8 +18,19 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
-import static in.sensemusic.sense.SearchFragment.arrayAdapter;
-import static in.sensemusic.sense.SearchFragment.arrayListSongs;
+import in.sensemusic.sense.R;
+import in.sensemusic.sense.fragments.AboutFragment;
+import in.sensemusic.sense.fragments.AlbumFragment;
+import in.sensemusic.sense.fragments.ArtistFragment;
+import in.sensemusic.sense.fragments.DeviceFragment;
+import in.sensemusic.sense.fragments.FeedbackFragment;
+import in.sensemusic.sense.fragments.HeartAnalyserFragment;
+import in.sensemusic.sense.fragments.HomeFragment;
+import in.sensemusic.sense.fragments.SearchFragment;
+import in.sensemusic.sense.fragments.SettingsFragment;
+import in.sensemusic.sense.fragments.SongFragment;
+import static in.sensemusic.sense.fragments.SearchFragment.arrayAdapter;
+import static in.sensemusic.sense.fragments.SearchFragment.arrayListSongs;
 
 
 public class MainActivity extends AppCompatActivity

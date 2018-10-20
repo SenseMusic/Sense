@@ -1,13 +1,10 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.adapters;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,59 +20,16 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ArtistFragment extends Fragment {
+import in.sensemusic.sense.R;
 
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    Cursor Artist_cursor;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_artist, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Artist);
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        String[] projection = {
-                MediaStore.Audio.Artists._ID,
-                MediaStore.Audio.Artists.ARTIST,
-                MediaStore.Audio.Artists.NUMBER_OF_TRACKS,
-        };
-
-        ContentResolver content = getActivity().getContentResolver();
-        Artist_cursor = content.query(
-                MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
-                projection,
-                null,
-                null,
-                MediaStore.Audio.Artists.ARTIST+"");
-
-        recyclerView.setAdapter(new ArtistAdapter(getContext(),Artist_cursor));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Artists");
-        // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Artists");
-    }
-
-}
-
-class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>{
+public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>{
 
     private Cursor artistCursor;
     private LayoutInflater layoutInflater;
     private Context context;
     private HashMap<String,String> albumartData;
 
-    ArtistAdapter(Context context, Cursor artistCursor) {
+    public ArtistAdapter(Context context, Cursor artistCursor) {
         this.artistCursor = artistCursor;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -129,7 +83,7 @@ class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>
                 )
                 .thumbnail(0.5f)
                 .transition(new DrawableTransitionOptions()
-                    .crossFade()
+                        .crossFade()
                 )
                 .into(holder.img_ArtistAlbumArt);
     }

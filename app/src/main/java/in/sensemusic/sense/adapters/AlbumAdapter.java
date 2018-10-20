@@ -1,13 +1,9 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.adapters;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,61 +16,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.util.Objects;
+import in.sensemusic.sense.R;
 
-public class AlbumFragment extends Fragment {
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    Cursor Media_cursor;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_album, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Album);
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        //Log.d("Sense","Album Called");
-
-        String[] projection = {
-                MediaStore.Audio.Albums._ID,
-                MediaStore.Audio.Albums.ALBUM,
-                MediaStore.Audio.Albums.ARTIST,
-                MediaStore.Audio.Albums.ALBUM_ART,
-        };
-
-        ContentResolver content = getActivity().getContentResolver();
-        Media_cursor = content.query(
-                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
-                projection,
-                null,//Selection Statement
-                null,//Selection Arguments replacement for ? in where id=?
-                MediaStore.Audio.Albums.ALBUM+"");
-
-        recyclerView.setAdapter(new AlbumAdapter(getContext(),Media_cursor));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Albums");
-        // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Albums");
-    }
-
-}
-
-class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
 
     private LayoutInflater layoutInflater;
     private Cursor AlbumCursor;
     private Context context;
 
-    AlbumAdapter(Context context, Cursor albumCursor) {
+    public AlbumAdapter(Context context, Cursor albumCursor) {
         AlbumCursor = albumCursor;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -112,7 +62,7 @@ class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
                         .crossFade()
                 )
                 .into(holder.Album_ART)
-                ;
+        ;
     }
 
     @Override

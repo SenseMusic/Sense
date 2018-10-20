@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -7,11 +7,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,67 +24,17 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.HashMap;
 import java.util.Objects;
 
-/*
-Recycler View
-1. Initialize RecyclerView & Layout Manager
-2. SetLayoutManager On RecyclerView
-*/
+import in.sensemusic.sense.R;
+import in.sensemusic.sense.fragments.PlayerFragment;
 
-public class SongFragment extends Fragment {
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_song, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        RecyclerView recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Songs);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-
-        String[] projection = {
-                MediaStore.Audio.Media._ID,
-                MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.ARTIST,
-                MediaStore.Audio.Media.DURATION,
-                MediaStore.Audio.Media.ALBUM,
-                MediaStore.Audio.Media.ALBUM_ID
-              };
-
-        ContentResolver content = getActivity().getContentResolver();
-        Cursor song_cursor = content.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                selection,
-                null,
-                MediaStore.Audio.Media.TITLE);
-
-        recyclerView.setAdapter(new SongAdapter(getContext(),song_cursor));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Songs");
-        // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Albums");
-    }
-
-}
-
-class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
     private Cursor songCursor;
     private Context context;
     private LayoutInflater layoutInflater;
     private HashMap<String, String> albumartData;
     private Bundle PlayerSongInfo  = new Bundle();
 
-    SongAdapter(Context context, Cursor songCursor) {
+    public SongAdapter(Context context, Cursor songCursor) {
         this.songCursor = songCursor;
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
@@ -111,7 +58,7 @@ class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>{
         {
             albumartData.put(albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums._ID)),
                     albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART)));
-         //   Log.d(TAG,albumartData.get(AlbumArtCursor.getString(AlbumArtCursor.getColumnIndex(MediaStore.Audio.Albums._ID)))+"Albumdata");
+            //   Log.d(TAG,albumartData.get(AlbumArtCursor.getString(AlbumArtCursor.getColumnIndex(MediaStore.Audio.Albums._ID)))+"Albumdata");
         }
     }
 

@@ -1,11 +1,10 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import java.util.Objects;
+
+import in.sensemusic.sense.R;
+import in.sensemusic.sense.activities.MainActivity;
+import in.sensemusic.sense.adapters.HomeAdapter;
 
 public class HomeFragment extends Fragment {
 
@@ -57,43 +60,5 @@ public class HomeFragment extends Fragment {
         ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Home");
          //((MainActivity) getActivity()).getSupportActionBar().setTitle("Home");
     }
-
-}
-
-class HomeAdapter extends FragmentPagerAdapter {
-
-    private String Tabtitle[] ={"Songs","Album","Artist"};
-
-    HomeAdapter(FragmentManager fm) {
-        super(fm);
-    }
-
-    @Override
-    public int getCount()
-    {
-        return 3;
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        //Log.d("sense","Called GetITEM at pos : "+position);
-        if(position == 0) {
-            return new SongFragment();
-        }
-        if(position == 1) {
-            return new AlbumFragment();
-        }
-        if(position == 2) {
-            return new ArtistFragment();
-        }
-        //else default
-        return new SongFragment();
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return Tabtitle[position];
-    }
-
 
 }

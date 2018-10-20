@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.Objects;
+
+import in.sensemusic.sense.R;
+import in.sensemusic.sense.activities.MainActivity;
 
 public class FeedbackFragment extends Fragment {
 

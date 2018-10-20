@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.fragments;
 
 import android.content.ContentUris;
 import android.media.AudioManager;
@@ -23,6 +23,9 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.io.IOException;
 import java.util.Objects;
+
+import in.sensemusic.sense.R;
+import in.sensemusic.sense.activities.MainActivity;
 
 public class PlayerFragment extends Fragment {
 

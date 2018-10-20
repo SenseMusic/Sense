@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Objects;
+
+import in.sensemusic.sense.R;
+import in.sensemusic.sense.activities.MainActivity;
 
 public class AboutFragment extends Fragment {
 

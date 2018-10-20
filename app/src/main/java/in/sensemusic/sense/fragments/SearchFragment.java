@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+
+import in.sensemusic.sense.R;
 
 public class SearchFragment extends Fragment {
 

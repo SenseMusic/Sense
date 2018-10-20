@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import in.sensemusic.sense.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
