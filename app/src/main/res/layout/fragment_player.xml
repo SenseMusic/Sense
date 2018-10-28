@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.sensemusic.sense.PlayerFragment"
+    tools:context="in.sensemusic.sense.fragments.PlayerFragment"
     android:id="@+id/content_fragment_player"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
@@ -30,10 +30,9 @@
         android:layout_alignParentStart="true"
         android:padding="6dp"
         android:ellipsize="marquee"
-        android:lines="1"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
-        />
+        android:singleLine="true" />
 
     <TextView
         android:text="Artist"
@@ -46,10 +45,9 @@
         android:textSize="16sp"
         android:padding="6dp"
         android:ellipsize="marquee"
-        android:lines="1"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
-        />
+        android:singleLine="true" />
 
     <TextView
         android:text="Now Playing Track"
@@ -62,11 +60,10 @@
         android:layout_alignParentStart="true"
         android:padding="6dp"
         android:ellipsize="marquee"
-        android:lines="1"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
 
-        />
+        android:singleLine="true" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,10 +1,13 @@
 package in.sensemusic.sense.activities;
 
+import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.FragmentTransaction;
@@ -64,6 +67,21 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        // TBD: Need to handle this if permission is removed onPause State of Main Activity
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this,"Permission NOT Present",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

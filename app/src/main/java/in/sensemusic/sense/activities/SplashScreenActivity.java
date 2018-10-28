@@ -1,11 +1,12 @@
 package in.sensemusic.sense.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -13,16 +14,157 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import in.sensemusic.sense.R;
+import in.sensemusic.sense.Utils;
 
+@SuppressLint("ClickableViewAccessibility")
 public class SplashScreenActivity extends AppCompatActivity {
 
     private static final int externalPermissionResponseCode = 1;
     private static final int requestSettingResponseCode = 2;
-    Boolean sentToSettings = false;
     SharedPreferences permissionStatus;
+
+    private void checkReadStoragePermissions() {
+        //if sdk is more than 23 (marshmallow) ask for run time permissions
+        if (Utils.isMarshmallow()) {
+            // if permission has not been granted
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                /* NOTES:- shouldShowRequestPermissionRationale() function which returns true if the
+                 app has requested this permission previously and the user denied the request. If the
+                 user turned down the permission request in the past and chose the Don't ask again option,
+                 this method returns false.*/
+
+                // Asking for the permission again if request was previously denied
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                    // Permission request was previously denied
+                    // Should we show an explanation?
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                    showCustomPermissionRationale();
+                }
+                // Asking for the permission again if request was previously denied and user have set don't ask again to true
+                else if (permissionStatus.getBoolean(Manifest.permission.READ_EXTERNAL_STORAGE, false)) {
+
+                    // Permission request was previously denied and set to don't ask again
+                    // Should we show an explanation?
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Permission Required");
+                    builder.setMessage("App won't run without storage permission ");
+                    builder.setPositiveButton("Grant", (dialog, which) -> {
+                        dialog.cancel();
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivityForResult(intent, requestSettingResponseCode);
+                        Toast.makeText(SplashScreenActivity.this, "Please Grant Storage Permission", Toast.LENGTH_SHORT).show();
+                    });
+                    /*builder.setNegativeButton("Deny", (dialog, which) -> {
+                        dialog.cancel();
+                        finish();
+                    });*/
+                    builder.setCancelable(false);
+                    try {
+                        builder.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                // Asking for the first time android will create request dialog by itself
+                else {
+                    // No explanation needed; request the permission
+                    showCustomPermissionRationale();
+
+                    //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, externalPermissionResponseCode);
+                }
+                SharedPreferences.Editor editor = permissionStatus.edit();
+                editor.putBoolean(Manifest.permission.READ_EXTERNAL_STORAGE, true);
+                editor.apply();
+            }
+            // Permission has already been granted
+            else {
+                onPermissionGranted();
+            }
+        }
+        //if sdk is less than 23 (marshmallow)
+        else {
+            onPermissionGranted();
+        }
+    }
+
+    @TargetApi(23)
+    private void showCustomPermissionRationale() {
+        final AlertDialog builder = new AlertDialog.Builder(this).create();
+        final View view = View.inflate(this, R.layout.dialog_permission, null);
+        builder.setView(view);
+        if (builder.getWindow() != null) {
+            builder.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
+        final Button positiveButton = view.findViewById(R.id.dlg_permission_btn_ok);
+        positiveButton.setOnClickListener((View v) -> {
+            builder.dismiss();
+            ActivityCompat.requestPermissions(SplashScreenActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, externalPermissionResponseCode);
+        });
+        builder.setCanceledOnTouchOutside(false);
+        try {
+            builder.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //do this if permission is granted
+    private void onPermissionGranted() {
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(SplashScreenActivity.this,MainActivity.class));
+            finish();
+        },500);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == externalPermissionResponseCode)
+        {
+            if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+
+                // if successfully permission is granted 1st time
+                onPermissionGranted();
+            }
+            else{
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+
+                    // Permission request was previously denied
+                    // Should we show an explanation?
+
+                    showCustomPermissionRationale();
+
+                } else {
+                    // permission not granted yet check for don't ask option set true
+                    Toast.makeText(SplashScreenActivity.this,"Unable to get Permission",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        }
+        else{
+            Toast.makeText(SplashScreenActivity.this,"Invalid requestCode",Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,65 +172,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
-        if(Build.VERSION.SDK_INT>=23)
-            permissionsCheck();
-        //if sdk is less than 23
-        else {
-            new Handler().postDelayed(() -> {
-                startActivity(new Intent(SplashScreenActivity.this,MainActivity.class));
-                finish();
-            },1000);
-        }
-    }
-
-    public void permissionsCheck() {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
-        {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Permission Required");
-                builder.setMessage(" App Won't Run without storage permission");
-                builder.setPositiveButton("Grant", (dialog, which) -> {
-                    dialog.cancel();
-                    ActivityCompat.requestPermissions(SplashScreenActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},externalPermissionResponseCode);
-                });
-                builder.setNegativeButton("Deny", (dialog, which) -> {
-                    dialog.cancel();
-                    finish();
-                });
-                builder.show();
-            } else if(permissionStatus.getBoolean(Manifest.permission.READ_EXTERNAL_STORAGE,false)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Permission Required");
-                builder.setMessage("App won't run without storage permission ");
-                builder.setPositiveButton("Grant", (dialog, which) -> {
-                    dialog.cancel();
-                    sentToSettings = true;
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package",getPackageName(),null);
-                    intent.setData(uri);
-                    startActivityForResult(intent,requestSettingResponseCode);
-                    Toast.makeText(SplashScreenActivity.this,"Please Grant Storage Permission",Toast.LENGTH_SHORT).show();
-                });
-                builder.setNegativeButton("Deny", (dialog, which) -> {
-                    dialog.dismiss();
-                    finish();
-                });
-                builder.show();
-            } else {
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},externalPermissionResponseCode);
-            }
-            SharedPreferences.Editor editor = permissionStatus.edit();
-            editor.putBoolean(Manifest.permission.READ_EXTERNAL_STORAGE,true);
-            editor.apply();
-        }
-        //if already permission is granted
-        else {
-            new Handler().postDelayed(() -> {
-                startActivity(new Intent(SplashScreenActivity.this,MainActivity.class));
-                finish();
-            },500);
-        }
+        //check for permission
+        checkReadStoragePermissions();
     }
 
     @Override
@@ -96,56 +181,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == requestSettingResponseCode)
         {
-            Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
-        } else Toast.makeText(this,"Permission NOT Granted",Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        if(sentToSettings)
-        {
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-            Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == externalPermissionResponseCode)
-        {
-            if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                onPermissionGranted();
+            }
+            else
             {
-                Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
-
-                // if successfully permission is granted 1st time
-                new Handler().postDelayed(() -> {
-                    startActivity(new Intent(SplashScreenActivity.this,MainActivity.class));
-                    finish();
-                },500);
-
-            }
-            else{
-                if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Permission Required");
-                    builder.setMessage(" App Won't Run without storage permission");
-                    builder.setPositiveButton("Grant", (dialog, which) -> {
-                        dialog.cancel();
-                        ActivityCompat.requestPermissions(SplashScreenActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},externalPermissionResponseCode);
-                    });
-                    builder.setNegativeButton("Deny", (dialog, which) -> {
-                        dialog.cancel();
-                        finish();
-                    });
-                    builder.show();
-                } else {
-                    Toast.makeText(SplashScreenActivity.this,"Unable to get Permission",Toast.LENGTH_LONG).show();
-                    finish();
-                }
+                Toast.makeText(this,"Permission NOT Granted",Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
+        else
+        {
+            Toast.makeText(this,"Invalid Response Code",Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
-
 }
