@@ -5,15 +5,15 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -36,7 +36,7 @@ import static in.sensemusic.sense.fragments.SearchFragment.arrayAdapter;
 import static in.sensemusic.sense.fragments.SearchFragment.arrayListSongs;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity2 extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SearchView searchView = null;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         // TBD: Need to handle this if permission is removed onPause State of Main Activity
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this,"Permission NOT Present",Toast.LENGTH_SHORT).show();
+            Toast.makeText((Context) this,"Permission NOT Present",Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
                 if(arrayListSongs.contains(query)){
                     arrayAdapter.getFilter().filter(query);
                 }else{
-                    Toast.makeText(MainActivity.this, "No Match found",Toast.LENGTH_LONG).show();
+                    Toast.makeText((Context) MainActivity2.this, "No Match found",Toast.LENGTH_LONG).show();
                 }
                 return false;
             }

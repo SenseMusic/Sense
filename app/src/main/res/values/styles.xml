@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme.-->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppThemeSense" parent="Theme.AppCompat">
         <!-- Customize your main app theme here. -->
 
     </style>
@@ -19,7 +19,6 @@
 
     </style>
 
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
         <!-- Overrite Customization for your main app theme attibutes for appbar's popups menu here. -->
 
@@ -27,28 +26,38 @@
 
 
     <!-- LIGHT THEME -->
-    <style name="AppThemeGo" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="icon_color">@color/black</item>
-        <item name="secondary_bg_color">@color/light</item>
+        <item name="card_color">@color/white</item>
+        <item name="controls_panel_stroke">@color/gray_50</item>
         <item name="theme_icon">@drawable/ic_invert_theme</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="android:navigationBarColor">@color/inverted</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:navigationBarColor">@color/black</item>
         <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
     </style>
 
     <!-- INVERTED THEME -->
-    <style name="AppThemeGoInverted" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="AppThemeInverted" parent="Theme.MaterialComponents.NoActionBar">
         <item name="icon_color">@color/white</item>
-        <item name="secondary_bg_color">@color/inverted</item>
-        <item name="theme_icon">@drawable/ic_invert_theme_off</item>
+        <item name="card_color">@color/black</item>
+        <item name="controls_panel_stroke">@color/gray_900</item>
         <item name="android:windowBackground">@color/black</item>
-        <item name="android:navigationBarColor">@color/inverted</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="theme_icon">@drawable/ic_invert_theme_off</item>
+        <item name="android:navigationBarColor">@color/black</item>
         <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.MaterialComponents.Light.Dialog.Alert" />
 
+    <style name="SeekBarStyle" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">?attr/colorAccent</item>
+        <item name="android:progressTint">?attr/colorAccent</item>
+    </style>
+
+    <style name="SearchBarStyle" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorAccent">?attr/icon_color</item>
+    </style>
 
 </resources>

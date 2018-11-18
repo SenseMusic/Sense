@@ -3,22 +3,24 @@ package in.sensemusic.sense.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import in.sensemusic.sense.MainActivity;
 import in.sensemusic.sense.R;
 import in.sensemusic.sense.Utils;
 
@@ -69,7 +71,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         Uri uri = Uri.fromParts("package", getPackageName(), null);
                         intent.setData(uri);
                         startActivityForResult(intent, requestSettingResponseCode);
-                        Toast.makeText(SplashScreenActivity.this, "Please Grant Storage Permission", Toast.LENGTH_SHORT).show();
+                        Toast.makeText((Context) SplashScreenActivity.this, "Please Grant Storage Permission", Toast.LENGTH_SHORT).show();
                     });
                     /*builder.setNegativeButton("Deny", (dialog, which) -> {
                         dialog.cancel();
@@ -107,7 +109,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @TargetApi(23)
     private void showCustomPermissionRationale() {
         final AlertDialog builder = new AlertDialog.Builder(this).create();
-        final View view = View.inflate(this, R.layout.dialog_permission, null);
+        final View view = View.inflate((Context) this, R.layout.dialog_permission, null);
         builder.setView(view);
         if (builder.getWindow() != null) {
             builder.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -128,7 +130,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     //do this if permission is granted
     private void onPermissionGranted() {
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashScreenActivity.this,MainActivity.class));
+            startActivity(new Intent((Context) SplashScreenActivity.this,MainActivity.class));
             finish();
         },500);
     }
@@ -140,7 +142,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         {
             if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-                Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+                Toast.makeText((Context) this,"Permission Granted",Toast.LENGTH_SHORT).show();
 
                 // if successfully permission is granted 1st time
                 onPermissionGranted();
@@ -155,13 +157,13 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 } else {
                     // permission not granted yet check for don't ask option set true
-                    Toast.makeText(SplashScreenActivity.this,"Unable to get Permission",Toast.LENGTH_LONG).show();
+                    Toast.makeText((Context) SplashScreenActivity.this,"Unable to get Permission",Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
         }
         else{
-            Toast.makeText(SplashScreenActivity.this,"Invalid requestCode",Toast.LENGTH_LONG).show();
+            Toast.makeText((Context) SplashScreenActivity.this,"Invalid requestCode",Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -182,18 +184,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         if(requestCode == requestSettingResponseCode)
         {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText((Context) this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 onPermissionGranted();
             }
             else
             {
-                Toast.makeText(this,"Permission NOT Granted",Toast.LENGTH_SHORT).show();
+                Toast.makeText((Context) this,"Permission NOT Granted",Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
         else
         {
-            Toast.makeText(this,"Invalid Response Code",Toast.LENGTH_SHORT).show();
+            Toast.makeText((Context) this,"Invalid Response Code",Toast.LENGTH_SHORT).show();
             finish();
         }
     }

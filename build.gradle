@@ -43,9 +43,7 @@ ext {
     versionCode = 1             // must increment with every new release
     versionName = '1.0'         // change with every release
 
-    // Application dependencies version info
-    supportLibraryVersion = '28.0.0'
-    constraintLayoutVersion = '1.1.3'
+    // Custom Application dependencies version info
     glideVersion = '4.8.0'
 }
 

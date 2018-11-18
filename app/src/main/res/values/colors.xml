@@ -6,7 +6,6 @@
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-
     <color name="light">#FAFAFA</color>
     <color name="inverted">#060606</color>
     <color name="red">#EF9A9A</color>
@@ -25,4 +24,6 @@
     <color name="brown">#BCAAA4</color>
     <color name="gray">#BDBDBD</color>
     <color name="blue_gray">#B0BEC5</color>
+    <color name="gray_50">#FAFAFA</color>
+    <color name="gray_900">#212121</color>
 </resources>

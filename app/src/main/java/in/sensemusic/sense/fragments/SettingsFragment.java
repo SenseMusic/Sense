@@ -1,8 +1,8 @@
 package in.sensemusic.sense.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.Objects;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity;
+import in.sensemusic.sense.activities.MainActivity2;
 
 public class SettingsFragment extends Fragment {
 
@@ -23,7 +23,7 @@ public class SettingsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Settings");
+        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Settings");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("About");
     }
 }

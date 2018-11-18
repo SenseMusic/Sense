@@ -4,11 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.card.MaterialCardView;
+import in.sensemusic.sense.adapters.ArtistsAdapter;
+import in.sensemusic.sense.indexbar.IndexBarRecyclerView;
+import in.sensemusic.sense.models.Album;
+import in.sensemusic.sense.models.Artist;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 
 public class Utils {
 
@@ -16,9 +28,26 @@ public class Utils {
     private static final String ACCENT_VALUE = "in.sensemusic.sense.pref_accent_value";
     private static final String THEME_PREF = "in.sensemusic.sense.pref_theme";
     private static final String THEME_VALUE = "in.sensemusic.sense.pref_theme_value";
+    private static final String SEARCH_BAR_PREF = "in.sensemusic.sense.pref_search_bar";
+    private static final String SEARCH_BAR_VALUE = "in.sensemusic.sense.pref_search_bar_value";
 
     public static boolean isMarshmallow() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
+    public static void setCardStroke(@NonNull final Context context, @NonNull final MaterialCardView container, final int color) {
+        container.setStrokeWidth(context.getResources().getDimensionPixelSize(R.dimen.selected_card_stroke_width));
+        container.setStrokeColor(color);
+    }
+
+    static void indexArtistAlbums(@NonNull final List<Album> albums) {
+        try {
+            for (int i = 0; i < albums.size(); i++) {
+                albums.get(i).setAlbumPosition(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static Spanned buildSpanned(@NonNull final String res) {
@@ -35,7 +64,7 @@ public class Utils {
         activity.recreate();
     }
 
-    private static boolean isThemeInverted(@NonNull final Context context) {
+    static boolean isThemeInverted(@NonNull final Context context) {
         boolean isThemeInverted;
         try {
             isThemeInverted = context.getSharedPreferences(THEME_PREF, Context.MODE_PRIVATE).getBoolean(THEME_VALUE, false);
@@ -46,9 +75,9 @@ public class Utils {
         return isThemeInverted;
     }
 
-    static void setTheme(@NonNull final Context context, final boolean isThemeInverted, final int accent) {
+    static void setTheme(@NonNull final Activity activity, final boolean isThemeInverted, final int accent) {
         final int theme = resolveTheme(isThemeInverted, accent);
-        context.setTheme(theme);
+        activity.setTheme(theme);
     }
 
     public static int getColorFromResource(@NonNull final Context context, final int resource, final int emergencyColor) {
@@ -157,7 +186,64 @@ public class Utils {
         return accent;
     }
 
+    static void hideSearchToolbar(@NonNull final Activity activity) {
+        final boolean isVisible = isSearchBarVisible(activity);
+        final boolean newVisibility = !isVisible;
+        final SharedPreferences preferences = activity.getSharedPreferences(SEARCH_BAR_PREF, Context.MODE_PRIVATE);
+        preferences.edit().putBoolean(SEARCH_BAR_VALUE, newVisibility).apply();
+        activity.recreate();
+    }
+
+    static boolean isSearchBarVisible(@NonNull final Context context) {
+        boolean isSearchBarHidden;
+        try {
+            isSearchBarHidden = context.getSharedPreferences(SEARCH_BAR_PREF, Context.MODE_PRIVATE).getBoolean(SEARCH_BAR_VALUE, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            isSearchBarHidden = false;
+        }
+        return isSearchBarHidden;
+    }
+
     static void updateTextView(@NonNull final TextView textView, @NonNull final String text) {
         textView.post(() -> textView.setText(text));
+    }
+
+    static void setupSearch(@NonNull final SearchView searchView, @NonNull final ArtistsAdapter artistsAdapter, @NonNull final List<Artist> artists, @NonNull final IndexBarRecyclerView indexBarRecyclerView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                processQuery(newText, artistsAdapter, artists);
+                return false;
+            }
+        });
+        searchView.setOnQueryTextFocusChangeListener((View v, boolean hasFocus) ->
+
+                indexBarRecyclerView.setIndexingEnabled(!hasFocus));
+    }
+
+
+    private static void processQuery(@NonNull final String query, @NonNull final ArtistsAdapter artistsAdapter, @NonNull final List<Artist> artists) {
+        // in real app you'd have it instantiated just once
+        final List<Artist> result = new ArrayList<>();
+
+        try {
+            // case insensitive search
+            for (Artist artist : artists) {
+                if (artist.getName().toLowerCase().startsWith(query.toLowerCase())) {
+                    result.add(artist);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (result.size() > 0) {
+            artistsAdapter.setArtists(result);
+        }
     }
 }

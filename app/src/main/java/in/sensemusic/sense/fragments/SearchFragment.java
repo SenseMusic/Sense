@@ -1,11 +1,12 @@
 package in.sensemusic.sense.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class SearchFragment extends Fragment {
 
         // Create a ArrayAdapter from List
         arrayAdapter = new ArrayAdapter<>(
-                getActivity(),
+                (Context) getActivity(),
                 android.R.layout.simple_list_item_1,
                 arrayListSongs);
 

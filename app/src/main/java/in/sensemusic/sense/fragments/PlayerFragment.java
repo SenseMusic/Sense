@@ -6,8 +6,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,12 +25,11 @@ import java.io.IOException;
 import java.util.Objects;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity;
+import in.sensemusic.sense.activities.MainActivity2;
 
 public class PlayerFragment extends Fragment {
 
-    MediaPlayer mediaPlayer = new MediaPlayer();
-    long currentSongID;
+    private MediaPlayer mediaPlayer = new MediaPlayer();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -56,7 +55,7 @@ public class PlayerFragment extends Fragment {
 
 
         if (SongInfo != null) {
-            currentSongID = SongInfo.getLong(MediaStore.Audio.Media._ID);
+            long currentSongID = SongInfo.getLong(MediaStore.Audio.Media._ID);
             NowPlayingTrack.setText(SongInfo.getString(MediaStore.Audio.Media.TITLE));
             Artist.setText(SongInfo.getString(MediaStore.Audio.Media.ARTIST));
             Album.setText(SongInfo.getString(MediaStore.Audio.Media.ALBUM));
@@ -104,7 +103,7 @@ public class PlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Player");
+        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Player");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Player");
     }
 
@@ -117,7 +116,7 @@ public class PlayerFragment extends Fragment {
         mediaPlayer = null;
     }
 
-    public void playSong(long currSong){
+    private void playSong(long currSong){
 
         // prepare uri
         Uri trackUri = ContentUris.withAppendedId(

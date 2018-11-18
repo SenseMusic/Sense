@@ -1,21 +1,21 @@
 package in.sensemusic.sense.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.Objects;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity;
+import in.sensemusic.sense.activities.MainActivity2;
 import in.sensemusic.sense.adapters.HomeAdapter;
 
 public class HomeFragment extends Fragment {
@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Home");
+        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Home");
          //((MainActivity) getActivity()).getSupportActionBar().setTitle("Home");
     }
 

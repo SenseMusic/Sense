@@ -4,24 +4,21 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView.LayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.Objects;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity;
+import in.sensemusic.sense.activities.MainActivity2;
 import in.sensemusic.sense.adapters.ArtistAdapter;
 
 public class ArtistFragment extends Fragment {
-
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    Cursor Artist_cursor;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,8 +28,8 @@ public class ArtistFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Artist);
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.recyclerView_Artist);
+        LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         String[] projection = {
@@ -42,21 +39,21 @@ public class ArtistFragment extends Fragment {
         };
 
         ContentResolver content = getActivity().getContentResolver();
-        Artist_cursor = content.query(
+        Cursor artist_cursor = content.query(
                 MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,
                 projection,
                 null,
                 null,
-                MediaStore.Audio.Artists.ARTIST+"");
+                MediaStore.Audio.Artists.ARTIST + "");
 
-        recyclerView.setAdapter(new ArtistAdapter(getContext(),Artist_cursor));
+        recyclerView.setAdapter(new ArtistAdapter(getContext(), artist_cursor));
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Artists");
+        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Artists");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Artists");
     }
 

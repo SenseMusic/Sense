@@ -1,9 +1,9 @@
 package in.sensemusic.sense.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import java.util.Objects;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity;
+import in.sensemusic.sense.activities.MainActivity2;
 
 public class DeviceFragment extends Fragment {
     @Nullable
@@ -24,7 +24,7 @@ public class DeviceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Device");
+        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Device");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("About");
     }
 }
