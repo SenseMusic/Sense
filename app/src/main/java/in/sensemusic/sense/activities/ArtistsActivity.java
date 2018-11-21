@@ -1,15 +1,12 @@
 package in.sensemusic.sense.activities;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
@@ -25,8 +22,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,7 +56,6 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -115,7 +109,9 @@ public class ArtistsActivity extends AppCompatActivity implements SongsAdapter.S
                 mPlaybackListener = new PlaybackListener();
                 mPlayerAdapter.setPlaybackInfoListener(mPlaybackListener);
             }
-            checkReadStoragePermissions();
+
+            // Check for necessary Prerequisites
+            initArtistsActivity();
         }
 
         @Override
@@ -179,50 +175,6 @@ public class ArtistsActivity extends AppCompatActivity implements SongsAdapter.S
             revealView(mArtistDetails, mArtistsRecyclerView, false);
         } else {
             super.onBackPressed();
-        }
-    }
-
-    private void checkReadStoragePermissions() {
-        if (Utils.isMarshmallow()) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                showPermissionRationale();
-            } else {
-                onPermissionGranted();
-            }
-        } else {
-            onPermissionGranted();
-        }
-    }
-
-    @TargetApi(23)
-    private void showPermissionRationale() {
-        final AlertDialog builder = new AlertDialog.Builder(this).create();
-        final View view = View.inflate(this, R.layout.dialog_permission, null);
-        builder.setView(view);
-        if (builder.getWindow() != null) {
-            builder.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        }
-        final Button positiveButton = view.findViewById(R.id.dlg_permission_btn_ok);
-        positiveButton.setOnClickListener((View v) -> {
-            builder.dismiss();
-            final int READ_FILES_CODE = 2588;
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}
-                    , READ_FILES_CODE);
-        });
-        builder.setCanceledOnTouchOutside(false);
-        try {
-            builder.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-            showPermissionRationale();
-        } else {
-            onPermissionGranted();
         }
     }
 
@@ -503,7 +455,7 @@ public class ArtistsActivity extends AppCompatActivity implements SongsAdapter.S
         colorsRecyclerView.setAdapter(new ColorsAdapter(this, mAccent));
     }
 
-    private void onPermissionGranted() {
+    private void initArtistsActivity() {
         final ArtistsViewModel model = ViewModelProviders.of(this).get(ArtistsViewModel.class);
         final List<Artist> artists = model.getArtists(this).getValue();
 

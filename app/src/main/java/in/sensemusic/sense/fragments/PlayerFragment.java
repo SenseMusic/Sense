@@ -74,8 +74,8 @@ public class PlayerFragment extends Fragment {
                     )
                     .into(AlbumArt);
 
-            //play song
-            playSong(currentSongID);
+            //NOTE: Not calling this function as in ArtistsActivity we are using player service to play song
+            //playSongWithoutService(currentSongID);
         }
         else {
             NowPlayingTrack.setText(getString(R.string.defaultSongTitle));
@@ -116,7 +116,7 @@ public class PlayerFragment extends Fragment {
         mediaPlayer = null;
     }
 
-    private void playSong(long currSong){
+    private void playSongWithoutService(long currSong){
 
         // prepare uri
         Uri trackUri = ContentUris.withAppendedId(
