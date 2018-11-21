@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.Objects;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity2;
+import in.sensemusic.sense.activities.MainActivity;
 
 public class SettingsFragment extends Fragment {
 
@@ -23,7 +23,7 @@ public class SettingsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Settings");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Settings");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("About");
     }
 }

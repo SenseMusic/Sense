@@ -11,7 +11,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.PowerManager;
 
-import in.sensemusic.sense.MainActivity;
+import in.sensemusic.sense.activities.ArtistsActivity;
 import in.sensemusic.sense.models.Album;
 import in.sensemusic.sense.models.Song;
 
@@ -27,7 +27,7 @@ import static android.content.Context.AUDIO_SERVICE;
 
 /**
  * Exposes the functionality of the {@link MediaPlayer} and implements the {@link PlayerAdapter}
- * so that {@link MainActivity} can control music playback.
+ * so that {@link ArtistsActivity} can control music playback.
  */
 public final class MediaPlayerHolder implements PlayerAdapter, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener {
 
@@ -296,8 +296,8 @@ public final class MediaPlayerHolder implements PlayerAdapter, MediaPlayer.OnCom
 
     /**
      * Once the {@link MediaPlayer} is released, it can't be used again, and another one has to be
-     * created. In the onStop() method of the {@link MainActivity} the {@link MediaPlayer} is
-     * released. Then in the onStart() of the {@link MainActivity} a new {@link MediaPlayer}
+     * created. In the onStop() method of the {@link ArtistsActivity} the {@link MediaPlayer} is
+     * released. Then in the onStart() of the {@link ArtistsActivity} a new {@link MediaPlayer}
      * object has to be created. That's why this method is private, and called by load(int) and
      * not the constructor.
      */

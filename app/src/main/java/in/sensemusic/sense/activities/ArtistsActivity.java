@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.activities;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -36,10 +36,13 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
+
+import in.sensemusic.sense.R;
 import in.sensemusic.sense.adapters.AlbumsAdapter;
 import in.sensemusic.sense.adapters.ArtistsAdapter;
 import in.sensemusic.sense.adapters.ColorsAdapter;
 import in.sensemusic.sense.adapters.SongsAdapter;
+import in.sensemusic.sense.extras.Utils;
 import in.sensemusic.sense.indexbar.IndexBarRecyclerView;
 import in.sensemusic.sense.indexbar.IndexBarView;
 import in.sensemusic.sense.loaders.ArtistProvider;
@@ -68,7 +71,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressLint("ClickableViewAccessibility")
-public class MainActivity extends AppCompatActivity implements SongsAdapter.SongSelectedListener, ColorsAdapter.AccentChangedListener, AlbumsAdapter.AlbumSelectedListener, ArtistsAdapter.ArtistSelectedListener {
+public class ArtistsActivity extends AppCompatActivity implements SongsAdapter.SongSelectedListener, ColorsAdapter.AccentChangedListener, AlbumsAdapter.AlbumSelectedListener, ArtistsAdapter.ArtistSelectedListener {
 
     private LinearLayoutManager mArtistsLayoutManager, mAlbumsLayoutManager, mSongsLayoutManager;
     private int mAccent;
@@ -233,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements SongsAdapter.Song
 
         Utils.setTheme(this, sThemeInverted, mAccent);
 
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_artists);
 
         getViews();
 
@@ -385,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements SongsAdapter.Song
                 final int h = mArtistsRecyclerView.getHeight();
                 mArtistsRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 if (mArtistsRecyclerView.computeVerticalScrollRange() > h) {
-                    final IndexBarView indexBarView = new IndexBarView(MainActivity.this, mArtistsRecyclerView, mArtistsAdapter, mArtistsLayoutManager, sThemeInverted, Utils.getColorFromResource(MainActivity.this, mAccent, R.color.blue));
+                    final IndexBarView indexBarView = new IndexBarView(ArtistsActivity.this, mArtistsRecyclerView, mArtistsAdapter, mArtistsLayoutManager, sThemeInverted, Utils.getColorFromResource(ArtistsActivity.this, mAccent, R.color.blue));
                     mArtistsRecyclerView.setFastScroller(indexBarView);
                 }
             }
@@ -407,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements SongsAdapter.Song
                     public void onProgressChanged(@NonNull final SeekBar seekBar, final int progress, final boolean fromUser) {
                         if (fromUser) {
                             userSelectedPosition = progress;
-                            mSongPosition.setTextColor(Utils.getColorFromResource(MainActivity.this, mAccent, R.color.blue));
+                            mSongPosition.setTextColor(Utils.getColorFromResource(ArtistsActivity.this, mAccent, R.color.blue));
                         }
                         mSongPosition.setText(Song.formatDuration(progress));
                     }
@@ -455,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements SongsAdapter.Song
     public void openEqualizer(@NonNull final View v) {
         if (EqualizerUtils.hasEqualizer(this)) {
             if (checkIsPlayer()) {
-                mPlayerAdapter.openEqualizer(MainActivity.this);
+                mPlayerAdapter.openEqualizer(ArtistsActivity.this);
             }
         } else {
             Toast.makeText(this, getString(R.string.no_eq), Toast.LENGTH_SHORT).show();
@@ -506,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements SongsAdapter.Song
 
         if (artists != null) {
             if (artists.isEmpty()) {
-                Toast.makeText(MainActivity.this, getString(R.string.error_no_music), Toast.LENGTH_SHORT)
+                Toast.makeText(ArtistsActivity.this, getString(R.string.error_no_music), Toast.LENGTH_SHORT)
                         .show();
                 finish();
 
@@ -535,7 +538,7 @@ public class MainActivity extends AppCompatActivity implements SongsAdapter.Song
     private void updateResetStatus(final boolean onPlaybackCompletion) {
         final int themeColor = sThemeInverted ? R.color.white : R.color.black;
         final int color = onPlaybackCompletion ? themeColor : mPlayerAdapter.isReset() ? mAccent : themeColor;
-        mSkipPrevButton.post(() -> mSkipPrevButton.setColorFilter(Utils.getColorFromResource(MainActivity.this, color, onPlaybackCompletion ? themeColor : mPlayerAdapter.isReset() ? R.color.blue : themeColor), PorterDuff.Mode.SRC_IN));
+        mSkipPrevButton.post(() -> mSkipPrevButton.setColorFilter(Utils.getColorFromResource(ArtistsActivity.this, color, onPlaybackCompletion ? themeColor : mPlayerAdapter.isReset() ? R.color.blue : themeColor), PorterDuff.Mode.SRC_IN));
     }
 
     private void updatePlayingStatus() {

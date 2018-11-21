@@ -4,7 +4,7 @@
     android:id="@+id/context_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.ArtistsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:id="@+id/artists_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MainActivity" />
+                tools:context=".activities.ArtistsActivity" />
 
             <!-- ARTIST'S DISCOGRAPHY -->
             <include layout="@layout/artist_details" />

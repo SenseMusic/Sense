@@ -1,4 +1,4 @@
-package in.sensemusic.sense;
+package in.sensemusic.sense.extras;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+
+import in.sensemusic.sense.R;
 import in.sensemusic.sense.adapters.ArtistsAdapter;
 import in.sensemusic.sense.indexbar.IndexBarRecyclerView;
 import in.sensemusic.sense.models.Album;
@@ -40,7 +42,7 @@ public class Utils {
         container.setStrokeColor(color);
     }
 
-    static void indexArtistAlbums(@NonNull final List<Album> albums) {
+    public static void indexArtistAlbums(@NonNull final List<Album> albums) {
         try {
             for (int i = 0; i < albums.size(); i++) {
                 albums.get(i).setAlbumPosition(i);
@@ -56,7 +58,7 @@ public class Utils {
                 Html.fromHtml(res);
     }
 
-    static void invertTheme(@NonNull final Activity activity) {
+    public static void invertTheme(@NonNull final Activity activity) {
         final boolean isDark = isThemeInverted(activity);
         final boolean value = !isDark;
         final SharedPreferences preferences = activity.getSharedPreferences(THEME_PREF, Context.MODE_PRIVATE);
@@ -64,7 +66,7 @@ public class Utils {
         activity.recreate();
     }
 
-    static boolean isThemeInverted(@NonNull final Context context) {
+    public static boolean isThemeInverted(@NonNull final Context context) {
         boolean isThemeInverted;
         try {
             isThemeInverted = context.getSharedPreferences(THEME_PREF, Context.MODE_PRIVATE).getBoolean(THEME_VALUE, false);
@@ -75,7 +77,7 @@ public class Utils {
         return isThemeInverted;
     }
 
-    static void setTheme(@NonNull final Activity activity, final boolean isThemeInverted, final int accent) {
+    public static void setTheme(@NonNull final Activity activity, final boolean isThemeInverted, final int accent) {
         final int theme = resolveTheme(isThemeInverted, accent);
         activity.setTheme(theme);
     }
@@ -165,13 +167,13 @@ public class Utils {
         return selectedTheme;
     }
 
-    static void setThemeAccent(@NonNull final Activity activity, final int accent) {
+    public static void setThemeAccent(@NonNull final Activity activity, final int accent) {
         final SharedPreferences preferences = activity.getSharedPreferences(ACCENT_PREF, Context.MODE_PRIVATE);
         preferences.edit().putInt(ACCENT_VALUE, accent).apply();
         activity.recreate();
     }
 
-    static int getAccent(@NonNull final Context context) {
+    public static int getAccent(@NonNull final Context context) {
         int accent;
         try {
             accent = context.getSharedPreferences(ACCENT_PREF, Context.MODE_PRIVATE).getInt(ACCENT_VALUE, R.color.blue);
@@ -186,7 +188,7 @@ public class Utils {
         return accent;
     }
 
-    static void hideSearchToolbar(@NonNull final Activity activity) {
+    public static void hideSearchToolbar(@NonNull final Activity activity) {
         final boolean isVisible = isSearchBarVisible(activity);
         final boolean newVisibility = !isVisible;
         final SharedPreferences preferences = activity.getSharedPreferences(SEARCH_BAR_PREF, Context.MODE_PRIVATE);
@@ -194,7 +196,7 @@ public class Utils {
         activity.recreate();
     }
 
-    static boolean isSearchBarVisible(@NonNull final Context context) {
+    public static boolean isSearchBarVisible(@NonNull final Context context) {
         boolean isSearchBarHidden;
         try {
             isSearchBarHidden = context.getSharedPreferences(SEARCH_BAR_PREF, Context.MODE_PRIVATE).getBoolean(SEARCH_BAR_VALUE, true);
@@ -205,11 +207,11 @@ public class Utils {
         return isSearchBarHidden;
     }
 
-    static void updateTextView(@NonNull final TextView textView, @NonNull final String text) {
+    public static void updateTextView(@NonNull final TextView textView, @NonNull final String text) {
         textView.post(() -> textView.setText(text));
     }
 
-    static void setupSearch(@NonNull final SearchView searchView, @NonNull final ArtistsAdapter artistsAdapter, @NonNull final List<Artist> artists, @NonNull final IndexBarRecyclerView indexBarRecyclerView) {
+    public static void setupSearch(@NonNull final SearchView searchView, @NonNull final ArtistsAdapter artistsAdapter, @NonNull final List<Artist> artists, @NonNull final IndexBarRecyclerView indexBarRecyclerView) {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

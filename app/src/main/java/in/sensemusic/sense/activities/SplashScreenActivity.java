@@ -20,9 +20,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
-import in.sensemusic.sense.MainActivity;
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.Utils;
+import in.sensemusic.sense.extras.Utils;
 
 @SuppressLint("ClickableViewAccessibility")
 public class SplashScreenActivity extends AppCompatActivity {

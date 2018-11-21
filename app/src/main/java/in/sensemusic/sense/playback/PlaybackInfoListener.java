@@ -16,7 +16,7 @@
 
 package in.sensemusic.sense.playback;
 
-import in.sensemusic.sense.MainActivity;
+import in.sensemusic.sense.activities.ArtistsActivity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -25,7 +25,7 @@ import androidx.annotation.IntDef;
 
 /**
  * Allows {@link MediaPlayerHolder} to report media playback duration and progress updates to
- * the {@link MainActivity}.
+ * the {@link ArtistsActivity}.
  */
 public abstract class PlaybackInfoListener {
 

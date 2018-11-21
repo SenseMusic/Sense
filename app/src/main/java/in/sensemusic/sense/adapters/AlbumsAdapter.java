@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.Utils;
+import in.sensemusic.sense.extras.Utils;
 import in.sensemusic.sense.models.Album;
 import in.sensemusic.sense.playback.PlayerAdapter;
 

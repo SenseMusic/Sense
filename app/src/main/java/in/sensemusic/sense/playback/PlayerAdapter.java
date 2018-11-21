@@ -19,7 +19,7 @@ package in.sensemusic.sense.playback;
 import android.app.Activity;
 import android.media.MediaPlayer;
 
-import in.sensemusic.sense.MainActivity;
+import in.sensemusic.sense.activities.ArtistsActivity;
 import in.sensemusic.sense.models.Album;
 import in.sensemusic.sense.models.Song;
 
@@ -29,7 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * Allows {@link MainActivity} to control media playback of {@link MediaPlayerHolder}.
+ * Allows {@link ArtistsActivity} to control media playback of {@link MediaPlayerHolder}.
  */
 public interface PlayerAdapter {
 

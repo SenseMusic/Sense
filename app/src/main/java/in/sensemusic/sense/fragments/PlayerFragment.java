@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity2;
+import in.sensemusic.sense.activities.MainActivity;
 
 public class PlayerFragment extends Fragment {
 
@@ -103,7 +103,7 @@ public class PlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Player");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Player");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Player");
     }
 

@@ -3,6 +3,7 @@ package in.sensemusic.sense.activities;
 import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -24,7 +25,6 @@ import java.util.Objects;
 import in.sensemusic.sense.R;
 import in.sensemusic.sense.fragments.AboutFragment;
 import in.sensemusic.sense.fragments.AlbumFragment;
-import in.sensemusic.sense.fragments.ArtistFragment;
 import in.sensemusic.sense.fragments.DeviceFragment;
 import in.sensemusic.sense.fragments.FeedbackFragment;
 import in.sensemusic.sense.fragments.HeartAnalyserFragment;
@@ -36,7 +36,7 @@ import static in.sensemusic.sense.fragments.SearchFragment.arrayAdapter;
 import static in.sensemusic.sense.fragments.SearchFragment.arrayListSongs;
 
 
-public class MainActivity2 extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SearchView searchView = null;
@@ -113,7 +113,7 @@ public class MainActivity2 extends AppCompatActivity
                 if(arrayListSongs.contains(query)){
                     arrayAdapter.getFilter().filter(query);
                 }else{
-                    Toast.makeText((Context) MainActivity2.this, "No Match found",Toast.LENGTH_LONG).show();
+                    Toast.makeText((Context) MainActivity.this, "No Match found",Toast.LENGTH_LONG).show();
                 }
                 return false;
             }
@@ -178,13 +178,16 @@ public class MainActivity2 extends AppCompatActivity
 
         }else if (id == R.id.nav_artists) {
 
+            startActivity(new Intent((Context) MainActivity.this, ArtistsActivity.class));
+
+/*
             ArtistFragment artistFragment = new ArtistFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame_main,artistFragment);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-
+*/
         }else if (id == R.id.nav_albums) {
 
             AlbumFragment albumtFragment = new AlbumFragment();

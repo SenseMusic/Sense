@@ -12,9 +12,9 @@ import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.text.Spanned;
 
-import in.sensemusic.sense.MainActivity;
+import in.sensemusic.sense.activities.ArtistsActivity;
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.Utils;
+import in.sensemusic.sense.extras.Utils;
 import in.sensemusic.sense.models.Song;
 
 import androidx.annotation.NonNull;
@@ -70,7 +70,7 @@ public class MusicNotificationManager {
             createNotificationChannel();
         }
 
-        final Intent openPlayerIntent = new Intent(mMusicService, MainActivity.class);
+        final Intent openPlayerIntent = new Intent(mMusicService, ArtistsActivity.class);
         openPlayerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent contentIntent = PendingIntent.getActivity(mMusicService, REQUEST_CODE,

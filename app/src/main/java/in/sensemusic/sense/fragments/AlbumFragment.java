@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.activities.MainActivity2;
+import in.sensemusic.sense.activities.MainActivity;
 import in.sensemusic.sense.adapters.AlbumAdapter;
 
 public class AlbumFragment extends Fragment {
@@ -56,7 +56,7 @@ public class AlbumFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Set Action Bar title
-        ((MainActivity2) Objects.requireNonNull(getActivity())).setActionBarTitle("Albums");
+        ((MainActivity) Objects.requireNonNull(getActivity())).setActionBarTitle("Albums");
         // ((MainActivity) getActivity()).getSupportActionBar().setTitle("Albums");
     }
 

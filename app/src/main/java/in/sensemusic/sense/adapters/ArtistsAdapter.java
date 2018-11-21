@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import in.sensemusic.sense.R;
-import in.sensemusic.sense.Utils;
+import in.sensemusic.sense.extras.Utils;
 import in.sensemusic.sense.models.Artist;
 
 import java.util.HashMap;
