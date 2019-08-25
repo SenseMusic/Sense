@@ -129,7 +129,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     //do this if permission is granted
     private void onPermissionGranted() {
         new Handler().postDelayed(() -> {
-            startActivity(new Intent((Context) SplashScreenActivity.this,MainActivity.class));
+            startActivity(new Intent((Context) SplashScreenActivity.this, ArtistsActivity.class));
             finish();
         },500);
     }

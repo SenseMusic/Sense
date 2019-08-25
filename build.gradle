@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -29,10 +29,10 @@ ext {
     applicationId = 'in.sensemusic.sense'
 
     // Sdk and tools version info
-    compileSdkVersion = 28
-    //buildToolsVersion = '28.0.3' //Android Studio now determines this dynamically and uses the latest installed build tool
+    compileSdkVersion = 29
+    //buildToolsVersion = '29.0.2' //Android Studio now determines this dynamically and uses the latest installed build tool
     minSdkVersion = 21
-    targetSdkVersion = 28
+    targetSdkVersion = 29
 
     /* Application version info
     NOTE:- versionCode — A positive integer used as an internal version number. This number is used only
@@ -44,7 +44,7 @@ ext {
     versionName = '1.0'         // change with every release
 
     // Custom Application dependencies version info
-    glideVersion = '4.8.0'
+    glideVersion = '4.9.0'
 }
 
 task clean(type: Delete) {
