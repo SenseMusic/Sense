@@ -1,10 +1,21 @@
-Sense Android Music Player 
+Sense Music Player 
 ===========================
+###### Very simple, slim, nice music player
+[![API](https://img.shields.io/badge/API-21%2B-blue.svg?style=flat-square)](https://android-arsenal.com/api?level=21) [![Donate on PayPal](https://img.shields.io/badge/PayPal-Donate%20Now-brightgreen.svg)](https://paypal.me/prashant06)
+
+###### Current version: 1.0
+
 Official Website: http://sensemusic.in
 
 The goal of this project is to implement an simple audio media app that works
 across multiple form factors and provide a consistent user experience
 on Android phones.
+
+# Download
+
+[<img alt="Get it on Google Play" height="80" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png">](https://play.google.com/store/apps/details?id=in.sensemusic.sense)
+[<img alt="Get it on F-Droid" height="80" src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png">](https://gitlab.com/fdroid/rfp/issues/1080)
+[<img alt="Get it on Github" height="80" src="https://raw.githubusercontent.com/flocke/andOTP/master/assets/badges/get-it-on-github.png">](https://github.com/SenseMusic/Sense/releases)
 
 Screenshots
 -----------
@@ -23,11 +34,26 @@ Screenshots
 Features
 --------
 
+Release v1.0:
+* Simple audio focus management
+* Expandable bottom panel
+* Clicking "played song info" opens the artist details
+* Long click on skip prev button enables repeat song 1x
+* Expand the panel to show settings
+* Dynamic shuffle 
+* System equaliser (if present on the device)
+* Dark and light themes + 16 accents
+* Enable/disable search bar
+* Indicator fast scroll 
+* Search bar
+* Open audio files from outside the app
+* Pause/resume when the headsets are (dis)connected
+
+Coming Soon
 - Moduler Application Design with single Activity and swaping fragments.
 - Material design with Dark theme.
 - Browse Songs, Albums, Artists Fragments
 - SearchhView, Player Fragment.
-- More features coming soon.
 
 Pre-requisites
 --------------
